@@ -123,32 +123,144 @@
             color: var(--accent-cyan);
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 1px solid rgba(6, 182, 212, 0.3);
         }
 
+        /* City Selector */
+        .city-selector {
+            margin-bottom: 20px;
+        }
+
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .city-checkbox {
+            display: none;
+        }
+
+        .city-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+        }
+
+        .city-label:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .city-checkbox:checked + .city-label {
+            border-color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+        }
+
+        .city-checkbox:checked + .city-label .check-icon {
+            background: var(--accent-cyan);
+        }
+
+        .check-icon {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 10px;
+        }
+
+        .city-checkbox:checked + .city-label .check-icon::after {
+            content: "✓";
+            color: var(--bg-dark);
+        }
+
+        .selected-count {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .selected-count span {
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .optimize-btn {
+            width: 100%;
+            padding: 14px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .optimize-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+        }
+
+        .optimize-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .optimize-btn.loading {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+        }
+
         /* Stats Grid */
+        .stats-section {
+            display: none;
+        }
+
+        .stats-section.visible {
+            display: block;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
         }
 
         .stat-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .stat-value.green { color: var(--accent-green); }
@@ -157,17 +269,25 @@
         .stat-value.blue { color: var(--accent-cyan); }
 
         .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         /* Route Legs */
+        .route-section {
+            display: none;
+        }
+
+        .route-section.visible {
+            display: block;
+        }
+
         .route-leg {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
@@ -175,31 +295,31 @@
 
         .route-leg:hover {
             border-color: rgba(6, 182, 212, 0.3);
-            transform: translateX(-5px);
+            transform: translateX(-3px);
         }
 
         .leg-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .leg-number {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--accent-cyan);
             background: rgba(6, 182, 212, 0.1);
-            padding: 4px 10px;
-            border-radius: 10px;
+            padding: 3px 8px;
+            border-radius: 8px;
         }
 
         .risk-badge {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 10px;
+            padding: 3px 10px;
+            border-radius: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -229,15 +349,15 @@
         }
 
         .leg-content {
-            padding: 15px;
+            padding: 12px;
         }
 
         .leg-route {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
         }
 
         .city-name {
@@ -247,14 +367,14 @@
 
         .route-arrow {
             color: var(--accent-cyan);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .leg-details {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            font-size: 0.7rem;
+            gap: 8px;
+            font-size: 0.65rem;
         }
 
         .detail-item {
@@ -275,21 +395,21 @@
         }
 
         .weather-info {
-            margin-top: 12px;
-            padding-top: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .weather-icon {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .weather-details {
             flex: 1;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
         }
 
         .weather-condition {
@@ -304,36 +424,35 @@
 
         /* Launch Button */
         .launch-section {
-            margin-top: 20px;
-            padding-top: 20px;
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
             border-top: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .launch-section.visible {
+            display: block;
         }
 
         .launch-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-cyan) 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--bg-dark);
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         .launch-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-        }
-
-        .launch-btn:active {
-            transform: translateY(0);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
         }
 
         /* Floating Info */
@@ -363,6 +482,24 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 0.8rem;
+            line-height: 1.6;
         }
 
         /* Loading State */
@@ -407,6 +544,19 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Mini spinner for button */
+        .btn-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
         /* Scrollbar */
         .side-panel::-webkit-scrollbar {
             width: 6px;
@@ -444,41 +594,65 @@
         <div class="globe-container">
             <div id="globeViz"></div>
             <div class="floating-info">
-                <div class="info-title">Current Mission Time</div>
+                <div class="info-title">Mission Time</div>
                 <div class="info-value" id="missionTime">00:00:00</div>
             </div>
         </div>
 
         <!-- Side Panel -->
         <div class="side-panel">
-            <div class="panel-title">Mission Overview</div>
-            
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value blue" id="totalDistance">22,847</div>
-                    <div class="stat-label">Miles Total</div>
+            <!-- City Selector -->
+            <div class="city-selector">
+                <div class="panel-title">Select Destinations</div>
+                <div class="city-grid" id="cityGrid">
+                    <!-- Cities will be loaded dynamically -->
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value green" id="totalETA">94.7</div>
-                    <div class="stat-label">Hours ETA</div>
+                <div class="selected-count">
+                    <span id="selectedCount">0</span> cities selected (min 2)
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value red" id="highRiskLegs">3</div>
-                    <div class="stat-label">High Risk</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value yellow" id="delayHours">16.4</div>
-                    <div class="stat-label">Delay Hours</div>
+                <button class="optimize-btn" id="optimizeBtn" disabled onclick="optimizeRoute()">
+                    ⚡ Optimize Route
+                </button>
+            </div>
+
+            <!-- Stats Section (hidden initially) -->
+            <div class="stats-section" id="statsSection">
+                <div class="panel-title">Mission Overview</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value blue" id="totalDistance">--</div>
+                        <div class="stat-label">Miles Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value green" id="totalETA">--</div>
+                        <div class="stat-label">Hours ETA</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value red" id="highRiskLegs">--</div>
+                        <div class="stat-label">High Risk</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value yellow" id="delayHours">--</div>
+                        <div class="stat-label">Delay Hours</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="panel-title">Route Legs</div>
-            <div id="routeLegs">
-                <!-- Route legs will be inserted here -->
+            <!-- Route Section (hidden initially) -->
+            <div class="route-section" id="routeSection">
+                <div class="panel-title">Route Legs</div>
+                <div id="routeLegs">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🌍</div>
+                        <div class="empty-state-text">
+                            Select cities above and click<br>"Optimize Route" to begin
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="launch-section">
+            <!-- Launch Section (hidden initially) -->
+            <div class="launch-section" id="launchSection">
                 <button class="launch-btn" onclick="launchMission()">
                     🚀 Launch Santa's Sleigh
                 </button>
@@ -488,137 +662,184 @@
 
     <script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
     <script>
-        // Santa's route data
-        const cities = [
-            { name: "New York", country: "USA", lat: 40.7128, lng: -74.0060 },
-            { name: "London", country: "UK", lat: 51.5074, lng: -0.1278 },
-            { name: "Tokyo", country: "Japan", lat: 35.6762, lng: 139.6503 },
-            { name: "Dubai", country: "UAE", lat: 25.2048, lng: 55.2708 },
-            { name: "Sydney", country: "Australia", lat: -33.8688, lng: 151.2093 },
-            { name: "São Paulo", country: "Brazil", lat: -23.5505, lng: -46.6333 }
-        ];
+        // API base URL
+        const API_URL = 'http://localhost:5001';
 
-        // Route legs with weather data (simulated from agent output)
-        const routeLegs = [
-            {
-                from: cities[0], to: cities[1],
-                distance: 3461, baseETA: 21.5, adjustedETA: 30.1,
-                risk: "HIGH", riskColor: "#ef4444",
-                weather: { icon: "🌨️", condition: "Heavy Snow", temp: -2, wind: 48, precip: 85 }
-            },
-            {
-                from: cities[1], to: cities[2],
-                distance: 5959, baseETA: 11.8, adjustedETA: 13.6,
-                risk: "MEDIUM", riskColor: "#f59e0b",
-                weather: { icon: "💨", condition: "High Winds", temp: 12, wind: 45, precip: 20 }
-            },
-            {
-                from: cities[2], to: cities[3],
-                distance: 4943, baseETA: 9.8, adjustedETA: 9.8,
-                risk: "LOW", riskColor: "#10b981",
-                weather: { icon: "☀️", condition: "Clear Skies", temp: 28, wind: 15, precip: 5 }
-            },
-            {
-                from: cities[3], to: cities[4],
-                distance: 7480, baseETA: 14.9, adjustedETA: 19.4,
-                risk: "HIGH", riskColor: "#ef4444",
-                weather: { icon: "🌧️", condition: "Heavy Rain", temp: 22, wind: 35, precip: 90 }
-            },
-            {
-                from: cities[4], to: cities[5],
-                distance: 8325, baseETA: 16.5, adjustedETA: 21.5,
-                risk: "HIGH", riskColor: "#ef4444",
-                weather: { icon: "⛈️", condition: "Thunderstorms", temp: 30, wind: 52, precip: 95 }
-            }
-        ];
-
-        // Create arcs data for globe
-        const arcsData = routeLegs.map((leg, i) => ({
-            startLat: leg.from.lat,
-            startLng: leg.from.lng,
-            endLat: leg.to.lat,
-            endLng: leg.to.lng,
-            color: leg.riskColor,
-            stroke: leg.risk === "HIGH" ? 3 : 2,
-            dashLength: leg.risk === "HIGH" ? 0.5 : 1,
-            dashGap: leg.risk === "HIGH" ? 0.2 : 0,
-            dashAnimateTime: 4000 - (i * 500)
-        }));
-
-        // Create points data for cities
-        const pointsData = cities.map((city, i) => {
-            const legTo = routeLegs.find(l => l.to.name === city.name);
-            const color = legTo ? legTo.riskColor : "#10b981";
-            return {
-                lat: city.lat,
-                lng: city.lng,
-                name: city.name,
-                color: color,
-                size: 0.5,
-                ring: legTo?.risk === "HIGH"
-            };
-        });
-
-        // Labels data
-        const labelsData = cities.map(city => ({
-            lat: city.lat,
-            lng: city.lng,
-            text: city.name,
-            color: '#ffffff',
-            size: 1.2
-        }));
+        // State
+        let availableCities = [];
+        let selectedCities = [];
+        let currentRouteData = null;
+        let globe = null;
 
         // Initialize Globe
-        const globe = Globe()
-            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
-            .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
-            .atmosphereColor('#06b6d4')
-            .atmosphereAltitude(0.25)
-            // Arcs (route lines)
-            .arcsData(arcsData)
-            .arcColor('color')
-            .arcStroke('stroke')
-            .arcDashLength('dashLength')
-            .arcDashGap('dashGap')
-            .arcDashAnimateTime('dashAnimateTime')
-            .arcAltitude(0.15)
-            .arcAltitudeAutoScale(0.5)
-            // Points (cities)
-            .pointsData(pointsData)
-            .pointColor('color')
-            .pointAltitude(0.01)
-            .pointRadius('size')
-            // Labels
-            .labelsData(labelsData)
-            .labelText('text')
-            .labelSize(1.5)
-            .labelDotRadius(0.4)
-            .labelColor(() => 'rgba(255, 255, 255, 0.9)')
-            .labelResolution(2)
-            // Rings for high-risk cities
-            .ringsData(pointsData.filter(p => p.ring))
-            .ringColor(() => 'rgba(239, 68, 68, 0.6)')
-            .ringMaxRadius(3)
-            .ringPropagationSpeed(2)
-            .ringRepeatPeriod(1000);
+        function initGlobe() {
+            globe = Globe()
+                .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+                .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+                .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+                .atmosphereColor('#06b6d4')
+                .atmosphereAltitude(0.25)
+                .arcsData([])
+                .pointsData([])
+                .labelsData([])
+                .ringsData([]);
 
-        // Mount globe
-        const container = document.getElementById('globeViz');
-        globe(container);
+            const container = document.getElementById('globeViz');
+            globe(container);
 
-        // Auto-rotate
-        globe.controls().autoRotate = true;
-        globe.controls().autoRotateSpeed = 0.5;
-        globe.controls().enableZoom = true;
+            // Auto-rotate
+            globe.controls().autoRotate = true;
+            globe.controls().autoRotateSpeed = 0.5;
+            globe.controls().enableZoom = true;
 
-        // Initial view
-        globe.pointOfView({ lat: 30, lng: 0, altitude: 2.5 }, 0);
+            // Initial view
+            globe.pointOfView({ lat: 20, lng: 0, altitude: 2.5 }, 0);
 
-        // Render route legs in side panel
-        function renderRouteLegs() {
+            // Handle resize
+            window.addEventListener('resize', () => {
+                globe.width(container.clientWidth);
+                globe.height(container.clientHeight);
+            });
+        }
+
+        // Load cities from API
+        async function loadCities() {
+            try {
+                const response = await fetch(`${API_URL}/api/cities`);
+                availableCities = await response.json();
+                renderCitySelector();
+            } catch (error) {
+                console.error('Failed to load cities:', error);
+                // Fallback to hardcoded cities
+                availableCities = [
+                    {id: "nyc", name: "New York, NY, USA", shortName: "New York", lat: 40.7128, lng: -74.0060},
+                    {id: "london", name: "London, UK", shortName: "London", lat: 51.5074, lng: -0.1278},
+                    {id: "tokyo", name: "Tokyo, Japan", shortName: "Tokyo", lat: 35.6762, lng: 139.6503},
+                    {id: "dubai", name: "Dubai, UAE", shortName: "Dubai", lat: 25.2048, lng: 55.2708},
+                    {id: "sydney", name: "Sydney, Australia", shortName: "Sydney", lat: -33.8688, lng: 151.2093},
+                    {id: "saopaulo", name: "São Paulo, Brazil", shortName: "São Paulo", lat: -23.5505, lng: -46.6333}
+                ];
+                renderCitySelector();
+            }
+        }
+
+        // Render city checkboxes
+        function renderCitySelector() {
+            const grid = document.getElementById('cityGrid');
+            grid.innerHTML = availableCities.map(city => `
+                <div>
+                    <input type="checkbox" class="city-checkbox" id="city-${city.id}" 
+                           value="${city.id}" onchange="updateSelectedCities()">
+                    <label class="city-label" for="city-${city.id}">
+                        <span class="check-icon"></span>
+                        <span>${city.shortName}</span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        // Update selected cities
+        function updateSelectedCities() {
+            const checkboxes = document.querySelectorAll('.city-checkbox:checked');
+            selectedCities = Array.from(checkboxes).map(cb => cb.value);
+            
+            document.getElementById('selectedCount').textContent = selectedCities.length;
+            document.getElementById('optimizeBtn').disabled = selectedCities.length < 2;
+
+            // Update globe with selected city markers
+            updateGlobeMarkers();
+        }
+
+        // Update globe with just markers (before optimization)
+        function updateGlobeMarkers() {
+            const selectedCityData = availableCities.filter(c => selectedCities.includes(c.id));
+            
+            const pointsData = selectedCityData.map(city => ({
+                lat: city.lat,
+                lng: city.lng,
+                name: city.shortName,
+                color: '#06b6d4',
+                size: 0.4
+            }));
+
+            const labelsData = selectedCityData.map(city => ({
+                lat: city.lat,
+                lng: city.lng,
+                text: city.shortName,
+                color: '#ffffff',
+                size: 1.2
+            }));
+
+            globe
+                .pointsData(pointsData)
+                .pointColor('color')
+                .pointAltitude(0.01)
+                .pointRadius('size')
+                .labelsData(labelsData)
+                .labelText('text')
+                .labelSize(1.5)
+                .labelDotRadius(0.4)
+                .labelColor(() => 'rgba(255, 255, 255, 0.9)')
+                .arcsData([])
+                .ringsData([]);
+        }
+
+        // Optimize route via API
+        async function optimizeRoute() {
+            const btn = document.getElementById('optimizeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-spinner"></span>Optimizing...';
+            btn.classList.add('loading');
+
+            try {
+                const response = await fetch(`${API_URL}/api/optimize`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cities: selectedCities })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Optimization failed');
+                }
+
+                currentRouteData = await response.json();
+                
+                // Update UI
+                updateStats(currentRouteData.summary);
+                updateRouteLegs(currentRouteData.legs);
+                updateGlobeWithRoute(currentRouteData);
+
+                // Show sections
+                document.getElementById('statsSection').classList.add('visible');
+                document.getElementById('routeSection').classList.add('visible');
+                document.getElementById('launchSection').classList.add('visible');
+
+            } catch (error) {
+                console.error('Optimization error:', error);
+                alert('Failed to optimize route. Make sure the server is running on port 5000.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '⚡ Optimize Route';
+                btn.classList.remove('loading');
+            }
+        }
+
+        // Update stats display
+        function updateStats(summary) {
+            document.getElementById('totalDistance').textContent = 
+                Math.round(summary.total_distance_miles).toLocaleString();
+            document.getElementById('totalETA').textContent = 
+                summary.total_adjusted_eta_hours.toFixed(1);
+            document.getElementById('highRiskLegs').textContent = 
+                summary.high_risk_legs;
+            document.getElementById('delayHours').textContent = 
+                summary.total_delay_hours.toFixed(1);
+        }
+
+        // Update route legs display
+        function updateRouteLegs(legs) {
             const container = document.getElementById('routeLegs');
-            container.innerHTML = routeLegs.map((leg, i) => `
+            container.innerHTML = legs.map((leg, i) => `
                 <div class="route-leg" onmouseenter="focusLeg(${i})">
                     <div class="leg-header">
                         <span class="leg-number">LEG ${i + 1}</span>
@@ -660,12 +881,118 @@
             `).join('');
         }
 
-        // Focus on leg when hovering
+        // Update globe with route data
+        function updateGlobeWithRoute(data) {
+            // Build arcs
+            const arcsData = data.legs.map((leg, i) => ({
+                startLat: leg.from.lat,
+                startLng: leg.from.lng,
+                endLat: leg.to.lat,
+                endLng: leg.to.lng,
+                color: leg.riskColor,
+                stroke: leg.risk === "HIGH" ? 3 : 2,
+                dashLength: leg.risk === "HIGH" ? 0.5 : 1,
+                dashGap: leg.risk === "HIGH" ? 0.2 : 0,
+                dashAnimateTime: 4000 - (i * 400)
+            }));
+
+            // Build points
+            const pointsData = data.cities.map((city, i) => {
+                const legTo = data.legs.find(l => l.to.name === city.name);
+                const color = legTo ? legTo.riskColor : "#10b981";
+                return {
+                    lat: city.lat,
+                    lng: city.lng,
+                    name: city.name,
+                    color: color,
+                    size: 0.5,
+                    ring: legTo?.risk === "HIGH"
+                };
+            });
+
+            // Build labels
+            const labelsData = data.cities.map(city => ({
+                lat: city.lat,
+                lng: city.lng,
+                text: city.name,
+                color: '#ffffff',
+                size: 1.2
+            }));
+
+            // Build rings for high-risk cities
+            const ringsData = pointsData.filter(p => p.ring);
+
+            // Update globe
+            globe
+                .arcsData(arcsData)
+                .arcColor('color')
+                .arcStroke('stroke')
+                .arcDashLength('dashLength')
+                .arcDashGap('dashGap')
+                .arcDashAnimateTime('dashAnimateTime')
+                .arcAltitude(0.15)
+                .arcAltitudeAutoScale(0.5)
+                .pointsData(pointsData)
+                .pointColor('color')
+                .pointAltitude(0.01)
+                .pointRadius('size')
+                .labelsData(labelsData)
+                .labelText('text')
+                .labelSize(1.5)
+                .labelDotRadius(0.4)
+                .labelColor(() => 'rgba(255, 255, 255, 0.9)')
+                .labelResolution(2)
+                .ringsData(ringsData)
+                .ringColor(() => 'rgba(239, 68, 68, 0.6)')
+                .ringMaxRadius(3)
+                .ringPropagationSpeed(2)
+                .ringRepeatPeriod(1000);
+
+            // Animate to show full route
+            if (data.cities.length > 0) {
+                const avgLat = data.cities.reduce((sum, c) => sum + c.lat, 0) / data.cities.length;
+                const avgLng = data.cities.reduce((sum, c) => sum + c.lng, 0) / data.cities.length;
+                globe.pointOfView({ lat: avgLat, lng: avgLng, altitude: 2.0 }, 1500);
+            }
+        }
+
+        // Focus on specific leg
         function focusLeg(index) {
-            const leg = routeLegs[index];
+            if (!currentRouteData) return;
+            const leg = currentRouteData.legs[index];
             const midLat = (leg.from.lat + leg.to.lat) / 2;
             const midLng = (leg.from.lng + leg.to.lng) / 2;
             globe.pointOfView({ lat: midLat, lng: midLng, altitude: 1.8 }, 1000);
+        }
+
+        // Launch animation
+        function launchMission() {
+            if (!currentRouteData) return;
+            
+            const btn = document.querySelector('.launch-btn');
+            btn.textContent = '🎅 SLEIGH LAUNCHED!';
+            btn.style.background = 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)';
+            
+            let currentLeg = 0;
+            function animateToNextLeg() {
+                if (currentLeg < currentRouteData.legs.length) {
+                    const leg = currentRouteData.legs[currentLeg];
+                    globe.pointOfView({ 
+                        lat: leg.to.lat, 
+                        lng: leg.to.lng, 
+                        altitude: 1.5 
+                    }, 2000);
+                    currentLeg++;
+                    setTimeout(animateToNextLeg, 3000);
+                } else {
+                    setTimeout(() => {
+                        globe.pointOfView({ lat: 20, lng: 0, altitude: 2.5 }, 2000);
+                        btn.textContent = '🚀 Launch Santa\'s Sleigh';
+                        btn.style.background = 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)';
+                    }, 2000);
+                }
+            }
+            animateToNextLeg();
         }
 
         // Mission time clock
@@ -676,53 +1003,20 @@
             const secs = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('missionTime').textContent = `${hours}:${mins}:${secs}`;
         }
-        setInterval(updateMissionTime, 1000);
-        updateMissionTime();
 
-        // Launch animation
-        function launchMission() {
-            const btn = document.querySelector('.launch-btn');
-            btn.textContent = '🎅 SLEIGH LAUNCHED!';
-            btn.style.background = 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)';
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            initGlobe();
+            await loadCities();
             
-            // Animate through each leg
-            let currentLeg = 0;
-            function animateToNextLeg() {
-                if (currentLeg < routeLegs.length) {
-                    const leg = routeLegs[currentLeg];
-                    globe.pointOfView({ 
-                        lat: leg.to.lat, 
-                        lng: leg.to.lng, 
-                        altitude: 1.5 
-                    }, 2000);
-                    currentLeg++;
-                    setTimeout(animateToNextLeg, 3000);
-                } else {
-                    // Return to overview
-                    setTimeout(() => {
-                        globe.pointOfView({ lat: 30, lng: 0, altitude: 2.5 }, 2000);
-                        btn.textContent = '🚀 Launch Santa\'s Sleigh';
-                        btn.style.background = 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)';
-                    }, 2000);
-                }
-            }
-            animateToNextLeg();
-        }
+            setInterval(updateMissionTime, 1000);
+            updateMissionTime();
 
-        // Hide loading overlay after globe loads
-        setTimeout(() => {
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }, 1500);
-
-        // Render route legs
-        renderRouteLegs();
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            globe.width(container.clientWidth);
-            globe.height(container.clientHeight);
+            // Hide loading overlay
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }, 1000);
         });
     </script>
 </body>
 </html>
-
