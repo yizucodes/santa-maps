@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎅 Santa's Live Route Whisperer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-panel: #111827;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --glow-red: 0 0 20px rgba(239, 68, 68, 0.5);
+            --glow-green: 0 0 20px rgba(16, 185, 129, 0.5);
+            --glow-cyan: 0 0 30px rgba(6, 182, 212, 0.4);
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.95) 0%, rgba(17, 24, 39, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--glow-cyan);
+            letter-spacing: 2px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-green);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent-green); }
+            50% { opacity: 0.5; box-shadow: 0 0 20px var(--accent-green); }
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: 100vh;
+            padding-top: 60px;
+        }
+
+        /* Globe Container */
+        .globe-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #globeViz {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Side Panel */
+        .side-panel {
+            width: 420px;
+            background: linear-gradient(180deg, var(--bg-panel) 0%, rgba(17, 24, 39, 0.95) 100%);
+            border-left: 1px solid rgba(6, 182, 212, 0.2);
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.yellow { color: var(--accent-yellow); }
+        .stat-value.red { color: var(--accent-red); }
+        .stat-value.blue { color: var(--accent-cyan); }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Route Legs */
+        .route-leg {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .route-leg:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .leg-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .leg-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 4px 10px;
+            border-radius: 10px;
+        }
+
+        .risk-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .risk-badge.low {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .risk-badge.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow);
+        }
+
+        .risk-badge.high {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        }
+
+        .leg-content {
+            padding: 15px;
+        }
+
+        .leg-route {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .city-name {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .route-arrow {
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+        }
+
+        .leg-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            font-size: 0.7rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .weather-info {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weather-icon {
+            font-size: 1.5rem;
+        }
+
+        .weather-details {
+            flex: 1;
+            font-size: 0.7rem;
+        }
+
+        .weather-condition {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .weather-stats {
+            color: var(--text-secondary);
+        }
+
+        /* Launch Button */
+        .launch-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .launch-btn {
+            width: 100%;
+            padding: 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-cyan) 100%);
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .launch-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Floating Info */
+        .floating-info {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            z-index: 100;
+        }
+
+        .info-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            margin-top: 30px;
+            letter-spacing: 3px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(6, 182, 212, 0.2);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        .side-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .side-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .side-panel::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">INITIALIZING MISSION CONTROL</div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">🎅 SANTA'S ROUTE WHISPERER</div>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            <span>Systems Online</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Globe -->
+        <div class="globe-container">
+            <div id="globeViz"></div>
+            <div class="floating-info">
+                <div class="info-title">Current Mission Time</div>
+                <div class="info-value" id="missionTime">00:00:00</div>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel">
+            <div class="panel-title">Mission Overview</div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value blue" id="totalDistance">22,847</div>
+                    <div class="stat-label">Miles Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value green" id="totalETA">94.7</div>
+                    <div class="stat-label">Hours ETA</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value red" id="highRiskLegs">3</div>
+                    <div class="stat-label">High Risk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value yellow" id="delayHours">16.4</div>
+                    <div class="stat-label">Delay Hours</div>
+                </div>
+            </div>
+
+            <div class="panel-title">Route Legs</div>
+            <div id="routeLegs">
+                <!-- Route legs will be inserted here -->
+            </div>
+
+            <div class="launch-section">
+                <button class="launch-btn" onclick="launchMission()">
+                    🚀 Launch Santa's Sleigh
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
+    <script>
+        // Santa's route data
+        const cities = [
+            { name: "New York", country: "USA", lat: 40.7128, lng: -74.0060 },
+            { name: "London", country: "UK", lat: 51.5074, lng: -0.1278 },
+            { name: "Tokyo", country: "Japan", lat: 35.6762, lng: 139.6503 },
+            { name: "Dubai", country: "UAE", lat: 25.2048, lng: 55.2708 },
+            { name: "Sydney", country: "Australia", lat: -33.8688, lng: 151.2093 },
+            { name: "São Paulo", country: "Brazil", lat: -23.5505, lng: -46.6333 }
+        ];
+
+        // Route legs with weather data (simulated from agent output)
+        const routeLegs = [
+            {
+                from: cities[0], to: cities[1],
+                distance: 3461, baseETA: 21.5, adjustedETA: 30.1,
+                risk: "HIGH", riskColor: "#ef4444",
+                weather: { icon: "🌨️", condition: "Heavy Snow", temp: -2, wind: 48, precip: 85 }
+            },
+            {
+                from: cities[1], to: cities[2],
+                distance: 5959, baseETA: 11.8, adjustedETA: 13.6,
+                risk: "MEDIUM", riskColor: "#f59e0b",
+                weather: { icon: "💨", condition: "High Winds", temp: 12, wind: 45, precip: 20 }
+            },
+            {
+                from: cities[2], to: cities[3],
+                distance: 4943, baseETA: 9.8, adjustedETA: 9.8,
+                risk: "LOW", riskColor: "#10b981",
+                weather: { icon: "☀️", condition: "Clear Skies", temp: 28, wind: 15, precip: 5 }
+            },
+            {
+                from: cities[3], to: cities[4],
+                distance: 7480, baseETA: 14.9, adjustedETA: 19.4,
+                risk: "HIGH", riskColor: "#ef4444",
+                weather: { icon: "🌧️", condition: "Heavy Rain", temp: 22, wind: 35, precip: 90 }
+            },
+            {
+                from: cities[4], to: cities[5],
+                distance: 8325, baseETA: 16.5, adjustedETA: 21.5,
+                risk: "HIGH", riskColor: "#ef4444",
+                weather: { icon: "⛈️", condition: "Thunderstorms", temp: 30, wind: 52, precip: 95 }
+            }
+        ];
+
+        // Create arcs data for globe
+        const arcsData = routeLegs.map((leg, i) => ({
+            startLat: leg.from.lat,
+            startLng: leg.from.lng,
+            endLat: leg.to.lat,
+            endLng: leg.to.lng,
+            color: leg.riskColor,
+            stroke: leg.risk === "HIGH" ? 3 : 2,
+            dashLength: leg.risk === "HIGH" ? 0.5 : 1,
+            dashGap: leg.risk === "HIGH" ? 0.2 : 0,
+            dashAnimateTime: 4000 - (i * 500)
+        }));
+
+        // Create points data for cities
+        const pointsData = cities.map((city, i) => {
+            const legTo = routeLegs.find(l => l.to.name === city.name);
+            const color = legTo ? legTo.riskColor : "#10b981";
+            return {
+                lat: city.lat,
+                lng: city.lng,
+                name: city.name,
+                color: color,
+                size: 0.5,
+                ring: legTo?.risk === "HIGH"
+            };
+        });
+
+        // Labels data
+        const labelsData = cities.map(city => ({
+            lat: city.lat,
+            lng: city.lng,
+            text: city.name,
+            color: '#ffffff',
+            size: 1.2
+        }));
+
+        // Initialize Globe
+        const globe = Globe()
+            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+            .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+            .atmosphereColor('#06b6d4')
+            .atmosphereAltitude(0.25)
+            // Arcs (route lines)
+            .arcsData(arcsData)
+            .arcColor('color')
+            .arcStroke('stroke')
+            .arcDashLength('dashLength')
+            .arcDashGap('dashGap')
+            .arcDashAnimateTime('dashAnimateTime')
+            .arcAltitude(0.15)
+            .arcAltitudeAutoScale(0.5)
+            // Points (cities)
+            .pointsData(pointsData)
+            .pointColor('color')
+            .pointAltitude(0.01)
+            .pointRadius('size')
+            // Labels
+            .labelsData(labelsData)
+            .labelText('text')
+            .labelSize(1.5)
+            .labelDotRadius(0.4)
+            .labelColor(() => 'rgba(255, 255, 255, 0.9)')
+            .labelResolution(2)
+            // Rings for high-risk cities
+            .ringsData(pointsData.filter(p => p.ring))
+            .ringColor(() => 'rgba(239, 68, 68, 0.6)')
+            .ringMaxRadius(3)
+            .ringPropagationSpeed(2)
+            .ringRepeatPeriod(1000);
+
+        // Mount globe
+        const container = document.getElementById('globeViz');
+        globe(container);
+
+        // Auto-rotate
+        globe.controls().autoRotate = true;
+        globe.controls().autoRotateSpeed = 0.5;
+        globe.controls().enableZoom = true;
+
+        // Initial view
+        globe.pointOfView({ lat: 30, lng: 0, altitude: 2.5 }, 0);
+
+        // Render route legs in side panel
+        function renderRouteLegs() {
+            const container = document.getElementById('routeLegs');
+            container.innerHTML = routeLegs.map((leg, i) => `
+                <div class="route-leg" onmouseenter="focusLeg(${i})">
+                    <div class="leg-header">
+                        <span class="leg-number">LEG ${i + 1}</span>
+                        <span class="risk-badge ${leg.risk.toLowerCase()}">${leg.risk} RISK</span>
+                    </div>
+                    <div class="leg-content">
+                        <div class="leg-route">
+                            <span class="city-name">${leg.from.name}</span>
+                            <span class="route-arrow">→</span>
+                            <span class="city-name">${leg.to.name}</span>
+                        </div>
+                        <div class="leg-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Distance</span>
+                                <span class="detail-value">${leg.distance.toLocaleString()} mi</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Base ETA</span>
+                                <span class="detail-value">${leg.baseETA} hrs</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Adjusted ETA</span>
+                                <span class="detail-value" style="color: ${leg.riskColor}">${leg.adjustedETA} hrs</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Delay</span>
+                                <span class="detail-value">+${(leg.adjustedETA - leg.baseETA).toFixed(1)} hrs</span>
+                            </div>
+                        </div>
+                        <div class="weather-info">
+                            <span class="weather-icon">${leg.weather.icon}</span>
+                            <div class="weather-details">
+                                <div class="weather-condition">${leg.weather.condition}</div>
+                                <div class="weather-stats">${leg.weather.temp}°C · ${leg.weather.wind} km/h · ${leg.weather.precip}% precip</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Focus on leg when hovering
+        function focusLeg(index) {
+            const leg = routeLegs[index];
+            const midLat = (leg.from.lat + leg.to.lat) / 2;
+            const midLng = (leg.from.lng + leg.to.lng) / 2;
+            globe.pointOfView({ lat: midLat, lng: midLng, altitude: 1.8 }, 1000);
+        }
+
+        // Mission time clock
+        function updateMissionTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            const secs = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('missionTime').textContent = `${hours}:${mins}:${secs}`;
+        }
+        setInterval(updateMissionTime, 1000);
+        updateMissionTime();
+
+        // Launch animation
+        function launchMission() {
+            const btn = document.querySelector('.launch-btn');
+            btn.textContent = '🎅 SLEIGH LAUNCHED!';
+            btn.style.background = 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)';
+            
+            // Animate through each leg
+            let currentLeg = 0;
+            function animateToNextLeg() {
+                if (currentLeg < routeLegs.length) {
+                    const leg = routeLegs[currentLeg];
+                    globe.pointOfView({ 
+                        lat: leg.to.lat, 
+                        lng: leg.to.lng, 
+                        altitude: 1.5 
+                    }, 2000);
+                    currentLeg++;
+                    setTimeout(animateToNextLeg, 3000);
+                } else {
+                    // Return to overview
+                    setTimeout(() => {
+                        globe.pointOfView({ lat: 30, lng: 0, altitude: 2.5 }, 2000);
+                        btn.textContent = '🚀 Launch Santa\'s Sleigh';
+                        btn.style.background = 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)';
+                    }, 2000);
+                }
+            }
+            animateToNextLeg();
+        }
+
+        // Hide loading overlay after globe loads
+        setTimeout(() => {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }, 1500);
+
+        // Render route legs
+        renderRouteLegs();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            globe.width(container.clientWidth);
+            globe.height(container.clientHeight);
+        });
+    </script>
+</body>
+</html>
+
