@@ -58,6 +58,7 @@
             font-weight: 900;
             background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: var(--glow-cyan);
             letter-spacing: 2px;
@@ -557,6 +558,205 @@
             vertical-align: middle;
         }
 
+        /* Mission Control Event Feed */
+        .event-feed-section {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .event-feed-section.visible {
+            display: block;
+        }
+
+        .event-feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .event-feed-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .event-feed-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.65rem;
+            color: var(--accent-green);
+        }
+
+        .event-feed-status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .event-feed-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .event-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid;
+            border-radius: 6px;
+            animation: slideIn 0.4s ease-out;
+            transition: all 0.2s ease;
+        }
+
+        .event-item:hover {
+            background: rgba(0, 0, 0, 0.4);
+            transform: translateX(-2px);
+        }
+
+        .event-item.info {
+            border-color: var(--accent-cyan);
+        }
+
+        .event-item.weather {
+            border-color: var(--accent-yellow);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .event-item.risk {
+            border-color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
+            animation: slideIn 0.4s ease-out, pulse-red 2s infinite;
+        }
+
+        .event-item.eta {
+            border-color: var(--accent-blue);
+        }
+
+        .event-item.impact {
+            border-color: var(--accent-yellow);
+        }
+
+        .event-item.success {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .event-item.system {
+            border-color: var(--accent-cyan);
+        }
+
+        .event-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .event-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .event-text {
+            flex: 1;
+            font-size: 0.7rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .event-time {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Critical Alert Banner */
+        .critical-alert {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.95) 0%, rgba(239, 68, 68, 0.85) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent-red);
+            padding: 12px 30px;
+            z-index: 999;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            animation: slideDown 0.5s ease-out, pulse-red 2s infinite;
+        }
+
+        .critical-alert.visible {
+            display: flex;
+        }
+
+        .critical-alert-icon {
+            font-size: 1.5rem;
+            animation: shake 0.5s infinite;
+        }
+
+        .critical-alert-text {
+            flex: 1;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        /* Scrollbar for event feed */
+        .event-feed-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .event-feed-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .event-feed-container::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
+
         /* Scrollbar */
         .side-panel::-webkit-scrollbar {
             width: 6px;
@@ -651,6 +851,20 @@
                 </div>
             </div>
 
+            <!-- Mission Control Event Feed -->
+            <div class="event-feed-section" id="eventFeedSection">
+                <div class="event-feed-header">
+                    <div class="event-feed-title">Mission Control Feed</div>
+                    <div class="event-feed-status">
+                        <div class="event-feed-status-dot"></div>
+                        <span>LIVE</span>
+                    </div>
+                </div>
+                <div class="event-feed-container" id="eventFeedContainer">
+                    <!-- Events will be added here -->
+                </div>
+            </div>
+
             <!-- Launch Section (hidden initially) -->
             <div class="launch-section" id="launchSection">
                 <button class="launch-btn" onclick="launchMission()">
@@ -658,6 +872,12 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Critical Alert Banner -->
+    <div class="critical-alert" id="criticalAlert">
+        <div class="critical-alert-icon">🚨</div>
+        <div class="critical-alert-text" id="criticalAlertText">HIGH RISK CONDITIONS DETECTED</div>
     </div>
 
     <script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
@@ -670,6 +890,7 @@
         let selectedCities = [];
         let currentRouteData = null;
         let globe = null;
+        let eventFeedActive = false;
 
         // Initialize Globe
         function initGlobe() {
@@ -791,6 +1012,12 @@
             btn.innerHTML = '<span class="btn-spinner"></span>Optimizing...';
             btn.classList.add('loading');
 
+            // Reset event feed
+            eventFeedActive = false;
+            document.getElementById('eventFeedContainer').innerHTML = '';
+            document.getElementById('eventFeedSection').classList.remove('visible');
+            document.getElementById('criticalAlert').classList.remove('visible');
+
             try {
                 const response = await fetch(`${API_URL}/api/optimize`, {
                     method: 'POST',
@@ -813,6 +1040,9 @@
                 document.getElementById('statsSection').classList.add('visible');
                 document.getElementById('routeSection').classList.add('visible');
                 document.getElementById('launchSection').classList.add('visible');
+                
+                // Start Mission Control event feed
+                startMissionControlFeed(currentRouteData);
 
             } catch (error) {
                 console.error('Optimization error:', error);
@@ -1002,6 +1232,257 @@
             const mins = String(now.getMinutes()).padStart(2, '0');
             const secs = String(now.getSeconds()).padStart(2, '0');
             document.getElementById('missionTime').textContent = `${hours}:${mins}:${secs}`;
+        }
+
+        // Mission Control Event Feed
+        function addEventToFeed(type, icon, message) {
+            const container = document.getElementById('eventFeedContainer');
+            const eventItem = document.createElement('div');
+            eventItem.className = `event-item ${type}`;
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            
+            eventItem.innerHTML = `
+                <div class="event-content">
+                    <div class="event-icon">${icon}</div>
+                    <div style="flex: 1;">
+                        <div class="event-text">${message}</div>
+                        <div class="event-time">${timeStr}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Insert at top
+            container.insertBefore(eventItem, container.firstChild);
+            
+            // Auto-scroll to top
+            container.scrollTop = 0;
+            
+            // Limit to 20 events
+            while (container.children.length > 20) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        function startMissionControlFeed(routeData) {
+            if (eventFeedActive) return;
+            eventFeedActive = true;
+            
+            // Show event feed section
+            document.getElementById('eventFeedSection').classList.add('visible');
+            
+            // Clear previous events
+            document.getElementById('eventFeedContainer').innerHTML = '';
+            
+            // Generate events based on route data
+            const events = generateEventsFromRoute(routeData);
+            
+            // Check for critical alerts
+            const hasHighRisk = routeData.summary.high_risk_legs > 0;
+            if (hasHighRisk) {
+                showCriticalAlert(routeData.summary.high_risk_legs);
+            }
+            
+            // Dispatch events with delays
+            let delay = 0;
+            events.forEach((event, index) => {
+                setTimeout(() => {
+                    addEventToFeed(event.type, event.icon, event.message);
+                }, delay);
+                delay += event.delay || 1500;
+            });
+        }
+
+        function generateEventsFromRoute(routeData) {
+            const events = [];
+            const summary = routeData.summary;
+            const legs = routeData.legs;
+            
+            // Initial system event
+            events.push({
+                type: 'info',
+                icon: '🎅',
+                message: 'Mission Control: Route optimization complete',
+                delay: 0
+            });
+            
+            // Analyze each leg
+            legs.forEach((leg, index) => {
+                const legNum = index + 1;
+                const weather = leg.weather || {};
+                const riskLevel = leg.risk || leg.risk_level || 'LOW';
+                
+                // Weather alert for high-risk legs
+                if (riskLevel === 'HIGH') {
+                    const precip = weather.precip || weather.precipitation_probability || 0;
+                    const wind = weather.wind || weather.wind_speed_kmh || 0;
+                    const condition = weather.condition || 'Unknown';
+                    const toCity = leg.to?.name || leg.to || 'Unknown';
+                    
+                    if (precip > 70) {
+                        events.push({
+                            type: 'weather',
+                            icon: '🌨️',
+                            message: `WEATHER ALERT: ${toCity} - ${condition} intensifying (${precip}% precipitation)`,
+                            delay: 2000
+                        });
+                    }
+                    
+                    if (wind > 40) {
+                        events.push({
+                            type: 'weather',
+                            icon: '💨',
+                            message: `WIND ALERT: ${toCity} - High winds detected (${wind} km/h)`,
+                            delay: 2500
+                        });
+                    }
+                    
+                    // Risk assessment
+                    const fromCity = leg.from?.name || leg.from || 'Unknown';
+                    events.push({
+                        type: 'risk',
+                        icon: '🚨',
+                        message: `RISK ASSESSMENT: Leg ${legNum} (${fromCity} → ${toCity}) - HIGH RISK`,
+                        delay: 3000
+                    });
+                    
+                    // ETA update
+                    const delayHours = leg.adjustedETA - leg.baseETA;
+                    if (delayHours > 0) {
+                        events.push({
+                            type: 'eta',
+                            icon: '⏰',
+                            message: `ETA UPDATE: Leg ${legNum} delayed +${delayHours.toFixed(1)} hours`,
+                            delay: 3500
+                        });
+                    }
+                    
+                    // Impact calculation - based on delay, distance, and city size estimate
+                    const legDistance = leg.distance || 0;
+                    // City size factor based on distance (longer routes typically mean larger metro areas)
+                    const citySizeFactor = legDistance > 10000 ? 2.5 : legDistance > 5000 ? 1.8 : 1.2;
+                    // Impact = delay hours × distance factor × city size (in millions)
+                    const impactGifts = Math.round((delayHours * legDistance / 1000 * citySizeFactor) * 10) / 10;
+                    if (impactGifts > 0.1) { // Only show if significant impact
+                        events.push({
+                            type: 'impact',
+                            icon: '🎁',
+                            message: `IMPACT: ${impactGifts.toFixed(1)}M gifts affected in ${toCity} area`,
+                            delay: 4000
+                        });
+                    }
+                } else if (riskLevel === 'MEDIUM') {
+                    events.push({
+                        type: 'weather',
+                        icon: '⚠️',
+                        message: `CAUTION: Leg ${legNum} - Moderate weather conditions`,
+                        delay: 2000
+                    });
+                }
+            });
+            
+            // Route summary events
+            if (summary.high_risk_legs > 0) {
+                const feasibility = Math.round(100 - (summary.high_risk_legs / legs.length * 30));
+                events.push({
+                    type: 'risk',
+                    icon: '📊',
+                    message: `ROUTE FEASIBILITY: ${feasibility}% - ${summary.high_risk_legs} high-risk leg(s) detected`,
+                    delay: 5000
+                });
+            }
+            
+            // Success message
+            events.push({
+                type: 'success',
+                icon: '✅',
+                message: `ROUTE OPTIMIZED: ${legs.length} legs analyzed, ${summary.total_distance_miles.toFixed(0)} miles total`,
+                delay: 6000
+            });
+            
+            // Rudolph beacon brightness - calculated from weather conditions
+            const calculateRudolphBrightness = () => {
+                let totalWeatherScore = 0;
+                let legCount = 0;
+                
+                legs.forEach(leg => {
+                    const weather = leg.weather || {};
+                    const precip = weather.precip || weather.precipitation_probability || 0;
+                    const wind = weather.wind || weather.wind_speed_kmh || 0;
+                    const riskLevel = leg.risk || leg.risk_level || 'LOW';
+                    
+                    // Calculate weather score (0-100, higher = better conditions)
+                    let weatherScore = 100;
+                    weatherScore -= (precip * 0.3); // Reduce by precipitation
+                    weatherScore -= Math.min(wind / 2, 30); // Reduce by wind (max 30 points)
+                    
+                    if (riskLevel === 'HIGH') weatherScore -= 20;
+                    else if (riskLevel === 'MEDIUM') weatherScore -= 10;
+                    
+                    totalWeatherScore += Math.max(0, Math.min(100, weatherScore));
+                    legCount++;
+                });
+                
+                const avgBrightness = legCount > 0 ? Math.round(totalWeatherScore / legCount) : 95;
+                return Math.max(60, Math.min(100, avgBrightness)); // Clamp between 60-100%
+            };
+            
+            const rudolphBrightness = calculateRudolphBrightness();
+            const brightnessStatus = rudolphBrightness >= 85 ? 'optimal' : rudolphBrightness >= 70 ? 'good' : 'degraded';
+            events.push({
+                type: 'system',
+                icon: '🌟',
+                message: `RUDOLPH BEACON: ${rudolphBrightness}% brightness - Navigation ${brightnessStatus}`,
+                delay: 7000
+            });
+            
+            // Fuel status - calculated from distance and route efficiency
+            const calculateFuelStatus = () => {
+                // Base fuel consumption: ~0.1% per 100 miles
+                const baseConsumption = summary.total_distance_miles * 0.001;
+                
+                // Additional consumption from delays/weather (inefficient flying)
+                const efficiencyPenalty = summary.total_delay_hours * 0.5; // 0.5% per hour of delay
+                
+                // Risk penalty (flying through bad weather uses more fuel)
+                const riskPenalty = summary.high_risk_legs * 2; // 2% per high-risk leg
+                
+                const totalConsumption = baseConsumption + efficiencyPenalty + riskPenalty;
+                const fuelRemaining = Math.max(0, Math.min(100, 100 - totalConsumption));
+                
+                return Math.round(fuelRemaining);
+            };
+            
+            const fuelPercent = calculateFuelStatus();
+            const fuelStatus = fuelPercent >= 70 ? 'excellent' : fuelPercent >= 50 ? 'good' : fuelPercent >= 30 ? 'moderate' : 'low';
+            const fuelWarning = fuelPercent < 30 ? ' - Monitor closely' : '';
+            events.push({
+                type: 'system',
+                icon: '🔋',
+                message: `FUEL STATUS: ${fuelPercent}% remaining - ${fuelStatus}${fuelWarning}`,
+                delay: 8000
+            });
+            
+            return events;
+        }
+
+        function showCriticalAlert(highRiskCount) {
+            const alert = document.getElementById('criticalAlert');
+            const alertText = document.getElementById('criticalAlertText');
+            
+            alertText.textContent = `${highRiskCount} HIGH RISK LEG(S) DETECTED - PROCEED WITH CAUTION`;
+            alert.classList.add('visible');
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                alert.classList.remove('visible');
+            }, 10000);
         }
 
         // Initialize
